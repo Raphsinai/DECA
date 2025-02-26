@@ -1,0 +1,20 @@
+MOV R0, #65535  // set R0 as op1 to 65535, the biggest number a sinuglar register can hold
+MOV R1, #2      // set R1 as op2 to 2
+MOV R2, #0      // set R2 as sum(31:16) to 0
+MOV R3, #0      // set R3 as sum(15:0) to 0
+MOV R4, #0      // set R4 as op2_shifted(31:16) to 0
+MOV R5, R1      // set R5 as op2_shifted(15:0) to R1
+MOV R0, R0      // change FlagZ according to R0
+JEQ 10          // if R0 = 0 then skip the loop instructions
+MOV R1, R0      // set now unused R1 to R0
+AND R1, #1      // AND R1 (= R0) with 1 and change FlagZ
+JEQ 3           // if R0 & 1 is 0 then skip addition and jump to shifts
+ADD R3, R3, R5  // add op2_shifted(15:0) to sum(15:0)
+ADC R2, R2, R4  // add op2_shifted(31:16) to sum(31:16) plus the carry from the previous addition
+LSL R5, R5, #1  // shift op2_shifted(15:0) to the left by one as going up in significance we have to multiply by 2
+ADC R4, R4      // shift op2_shifted(31:16) to the left by one and add the carry out from the previous shift
+LSR R0, R0, #1  // shift op1 to the right by 1 as we are increasing in significance so we want to get the next bit as the LSB
+JMP -10         // jump back to check if op1 = 0 and restart the loop
+
+
+
