@@ -1,0 +1,7 @@
+MOV R0, #1      // R0 will end with 1
+MOV R1, #2      // arbitrary value for R1
+MOVC1 R1, R0    // R1 := R1 + (R1 AND R0(0)) = 4
+MOV R0, #-1     // set all bits to 1
+LSL R2, R0, #1  // set FlagC to 1 but no change to R0
+MOVC2 R1, R0    // R1 += R1 + (R1 AND R0(0)) + FlagC (1 in this case) = 9
+
